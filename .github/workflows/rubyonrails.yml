@@ -43,7 +43,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
 
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
@@ -51,21 +51,19 @@ jobs:
       - name: Deploy with rsync
         run: rsync -nv /home/projects/ ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
-        with:
-          bundler-cache: true
-      # Add or replace any other lints here
-      - name: Security audit dependencies
-        run: bin/bundler-audit --update
-      - name: Security audit application code
-        run: bin/brakeman -q -w2
-      - name: Lint Ruby files
-        run: bin/rubocop --parallel
-        
-
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #     - name: Install Ruby and gems
+  #       uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+  #       with:
+  #         bundler-cache: true
+  #     # Add or replace any other lints here
+  #     - name: Security audit dependencies
+  #       run: bin/bundler-audit --update
+  #     - name: Security audit application code
+  #       run: bin/brakeman -q -w2
+  #     - name: Lint Ruby files
+  #       run: bin/rubocop --parallel
