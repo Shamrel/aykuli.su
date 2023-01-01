@@ -7,9 +7,9 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -56,3 +56,19 @@ jobs:
         run: bin/brakeman -q -w2
       - name: Lint Ruby files
         run: bin/rubocop --parallel
+
+  build:
+    name: Deploy
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/Known_hosts
+
+      - name: Deploy with rsync
+        run: rsync -nv /home/projects/ ${{ secrets.SSH_USER}}
