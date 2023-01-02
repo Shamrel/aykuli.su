@@ -57,10 +57,6 @@ jobs:
           echo '0     -----------------------------------------'
           cat ~/.ssh/known_hosts
           echo '1     ----------------------------------------'
-          echo ${{ secrets.SSH_USER }}
-          echo '1     ----------------------------------------'
-          echo ${{ secrets.SSH_HOST }}
-          echo '1     ----------------------------------------'
           rsync -rv --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
           echo '2     ----------------------------------------'
           docker container stop ror
