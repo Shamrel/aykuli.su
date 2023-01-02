@@ -55,7 +55,9 @@ jobs:
         run: |
           ls . -al
           echo '-----------------'
-          rsync -nv -e . ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/aa
+          rsync -rv --delete . ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
+          docker container stop ror
+          docker-compose --file docker-compose.prod.yml up -d
 
   # lint:
   #   runs-on: ubuntu-latest
