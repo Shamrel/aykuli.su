@@ -54,9 +54,17 @@ jobs:
       - name: Copy with rsync
         run: |
           ls . -al
-          echo '-----------------'
-          rsync -rv --delete . ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
+          echo '0     -----------------------------------------'
+          cat ~/.ssh/known_hosts
+          echo '1     ----------------------------------------'
+          echo secrets.SSH_USER 
+          echo '1     ----------------------------------------'
+          echo secrets.SSH_HOST 
+          echo '1     ----------------------------------------'
+          rsync -rv --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
+          echo '2     ----------------------------------------'
           docker container stop ror
+          echo '3     ----------------------------------------'
           docker-compose --file docker-compose.prod.yml up -d
 
   # lint:
