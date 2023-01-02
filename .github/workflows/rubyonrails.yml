@@ -53,9 +53,9 @@ jobs:
 
       - name: Copy with rsync
         run: |
-          ls -al
+          ls . -al
           echo '-----------------'
-          rsync -nv -e ./ ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/aa
+          rsync -nv -e . ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:/home/projects/aa
 
   # lint:
   #   runs-on: ubuntu-latest
