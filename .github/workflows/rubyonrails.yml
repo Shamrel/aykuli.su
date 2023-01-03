@@ -50,6 +50,14 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
+      - name: Run command on remote server
+        uses: D3rHase/ssh-command-action@{version}
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: echo 'hello world' # Command to be executed - Default: echo 'h
+
 
       # - name: Copy with rsync
       #   run: |
