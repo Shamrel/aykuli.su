@@ -43,24 +43,25 @@ jobs:
       - name: Run tests
         run: bin/rake
       - name: Install SSH
-        uses: webfactory/ssh-agent@v0.4.0
+        uses: invi5H/ssh-action@v1.0.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+      - run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
 
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Copy with rsync
-        run: |
-          ls . -al
-          echo '0     -----------------------------------------'
-          cat ~/.ssh/known_hosts
-          echo '1     ----------------------------------------'
-          rsync -rv --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
-          echo '2     ----------------------------------------'
-          docker container stop ror
-          echo '3     ----------------------------------------'
-          docker-compose --file docker-compose.prod.yml up -d
+      # - name: Copy with rsync
+      #   run: |
+      #     ls . -al
+      #     echo '0     -----------------------------------------'
+      #     cat ~/.ssh/known_hosts
+      #     echo '1     ----------------------------------------'
+      #     rsync -rv --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
+      #     echo '2     ----------------------------------------'
+      #     docker container stop ror
+      #     echo '3     ----------------------------------------'
+      #     docker-compose --file docker-compose.prod.yml up -d
 
   # lint:
   #   runs-on: ubuntu-latest
