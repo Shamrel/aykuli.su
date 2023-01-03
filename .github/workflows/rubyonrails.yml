@@ -43,22 +43,22 @@ jobs:
       # - name: Run tests
       #   run: bin/rake
 
-      # - name: Clean files on remote server
-      #   uses: D3rHase/ssh-command-action@v0.2.2
-      #   with:
-      #     host: ${{secrets.SSH_HOST}}
-      #     user: ${{secrets.SSH_USER}}
-      #     private_key: ${{secrets.SSH_PRIVATE_KEY}}
-      #     command: cd /home/projects; rm -r aykuli.su/; ls -al /home/projects
+      - name: Clean files on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: cd /home/projects; rm -r aykuli.su/; ls -al /home/projects
 
-      # - name: Copy new files to remote server
-      #   uses: garygrossgarten/github-action-scp@release
-      #   with:
-      #     local: .
-      #     remote: /home/projects/aykuli.su
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
+      - name: Copy new files to remote server
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .
+          remote: /home/projects/aykuli.su
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
 
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
