@@ -42,14 +42,16 @@ jobs:
       # Add or replace test runners here
       # - name: Run tests
       #   run: bin/rake
-      - name: Copy to remote server
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: .
-          remote: /home/projects/aykuli.su
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+      # - name: Copy to remote server
+      #   uses: garygrossgarten/github-action-scp@release
+      #   with:
+      #     local: .
+      #     remote: /home/projects/aykuli.su
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+
+      # TESTING STAGE
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
