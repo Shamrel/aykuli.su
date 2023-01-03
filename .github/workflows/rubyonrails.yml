@@ -48,8 +48,11 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: 22
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-      - run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - run: |
+          echo ${{ steps.ssh.outputs.SERVER }}
+          echo ${{ steps.ssh.outputs.name }}
+          ssh ${{ steps.ssh.outputs.SERVER }} pwd
 
       # - name: Copy with rsync
       #   run: |
