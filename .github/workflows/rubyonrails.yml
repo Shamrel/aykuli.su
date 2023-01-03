@@ -42,14 +42,14 @@ jobs:
       # Add or replace test runners here
       - name: Run tests
         run: bin/rake
-      - name: Install SSH
-        uses: invi5H/ssh-action@v1.0.0
+      - name: Copy to remote server
+        uses: garygrossgarten/github-action-scp@release
         with:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: 22
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: rsync -rv --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/projects/aykuli.su
+          local: .
+          remote: /home/projects/aykuli.su
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # - name: Copy with rsync
       #   run: |
