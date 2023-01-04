@@ -1,0 +1,59 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+  Exclude:
+    - bin/**/*
+    - config/routes.rb
+    - db/schema.rb
+    - db/migrate/**/*
+    - db/seeds/**/*.rb
+    - vendor/**/*
+    - Gemfile
+    - Gemfile.package
+    - Rakefile
+    - config.ru
+
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Style/ExponentialNotation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/ShortI18n:
+  Enabled: false
+
+Rails/WhereNot:
+  Enabled: false
+
+Style/NumberedParameters:
+  Enabled: false
+
+Style/NumberedParametersLimit:
+  Max: 2
+
+Metrics/MethodLength:
+  Max: 12
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Rails/WhereEquals:
+  Enabled: false
