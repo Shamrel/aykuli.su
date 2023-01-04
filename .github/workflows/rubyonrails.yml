@@ -10,6 +10,7 @@ on:
     branches: ["dev"]
   # pull_request:
   #   branches: ["main"]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -47,13 +48,20 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      # - name: Clean files on remote server
-      #   uses: D3rHase/ssh-command-action@v0.2.2
-      #   with:
-      #     host: ${{secrets.SSH_HOST}}
-      #     user: ${{secrets.SSH_USER}}
-      #     private_key: ${{secrets.SSH_PRIVATE_KEY}}
-      #     command: cd /home/projects/aykuli.su/; rm -r *
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # Add or replace dependency steps here
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+        with:
+          bundler-cache: true
+      - name: Clean files on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: cd /home/projects/aykuli.su/; rm -r *
 
       - name: Copy new files to remote server
         uses: garygrossgarten/github-action-scp@release
