@@ -53,7 +53,7 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: cd /home/projects; rm -r aykuli.su/; ls -al /home/projects
+          command: cd /home/projects; rm -r aykuli.su/; ls -al /home/projects; mkdir aykuli.su/
 
       - name: Copy new files to remote server
         uses: garygrossgarten/github-action-scp@release
