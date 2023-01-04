@@ -1,4 +1,4 @@
-FROM ruby:3.1.3-alpine3.16
+FROM ruby:3.1-alpine3.15
 
 ARG RAILS_ROOT=/app
 ARG PACKAGES="vim openssl-dev postgresql-dev build-base curl nodejs yarn less tzdata git postgresql-client bash screen gcompat"
