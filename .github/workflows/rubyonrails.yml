@@ -53,7 +53,16 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: cd /home/projects/aykuli.su/; git checkout dev; git pull
+          command: cd /home/projects/aykuli.su/; rm -r *
+
+      - name: Copy new files to remote server
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .
+          remote: /home/projects/aykuli.su
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
 
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
