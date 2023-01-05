@@ -1,18 +1,29 @@
-# This workflow uses actions that are not certified by GitHub.  They are
-# provided by a third-party and are governed by separate terms of service,
-# privacy policy, and support documentation.
-#
 # This workflow will install a prebuilt Ruby version, install dependencies, and
-# run tests and linters.
+# run tests and linters. Then it pulls new features from my repo and
+# rebuild containers on remote server through ssh.
+
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: ["dev"]
-  # pull_request:
-  #   branches: ["main"]
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+        with:
+          bundler-cache: true
+      - name: Lint Ruby files
+        run: bundle exec rubocop
+
   test:
+    needs: lint
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -32,25 +43,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      # Add or replace dependency steps here
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
         with:
           bundler-cache: true
-      # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rails db:schema:load
-      # Add or replace test runners here
       - name: Run tests
         run: bin/rake
 
-  joba_joba:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      # Add or replace dependency steps here
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
         with:
@@ -64,14 +71,3 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: cd /home/projects/aykuli.su/;git co dev;git pull; cp ../aykuli.su.env .env; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install Ruby and gems
-        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
-        with:
-          bundler-cache: true
-      - name: Lint Ruby files
-        run: bundle exec rubocop --parallel
