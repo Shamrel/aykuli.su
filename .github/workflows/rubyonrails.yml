@@ -7,7 +7,7 @@ on:
   push:
     branches: ["dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["dev"]
 
 jobs:
   lint:
@@ -50,7 +50,7 @@ jobs:
       - name: Set up database schema
         run: bin/rails db:schema:load
       - name: Run tests
-        run: bin/rake
+        run: bin/rake test
 
   deploy:
     needs: test
