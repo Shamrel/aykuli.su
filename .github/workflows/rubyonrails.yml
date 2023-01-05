@@ -70,10 +70,15 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
+            echo '--- HERE WE START WORK ON REMOTE SERVER ---'
             cd /home/projects/aykuli.su/
             git co dev
             git pull
             cp ../aykuli.su.env .env
-            docker-compose pull
-            docker-compose --file docker-compose.prod.yml up -d
+            ls -al | grep '.env'
+            echo '--- I WANNA BE SURE THAT I COPIED SOME FILE ---'
+            sudo docker-compose pull
+            sudo docker-compose --file docker-compose.prod.yml up -d
+            echo '--- LIST OF DOCKER CONTAINERS ON REMOTE SERVER ---'            
+            sudo docker ps
 
