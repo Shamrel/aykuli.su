@@ -42,7 +42,7 @@ Workflow файлами Github запускает Actions, выполняющи�
 <details>
    <summary>Пример базового workflow файла simple.yml</summary>
    
-   ```shell
+   ```sh
 name: CI
 on:
    # События, которые запускают jobs
@@ -107,14 +107,87 @@ jobs:
 <details>
 <summary>Мой пример .github/workflows/rubyonrails.yml</summary>
 
-```shell
-
+```sh
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters. Then it pulls new features from my repo and
 # rebuild containers on remote server through ssh.
 
 name: "Ruby on Rails CI"
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+        with:
+          bundler-cache: true
+      - name: Lint Ruby files
+        run: bundle exec rubocop
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      POSTGRES_DB: rails_test
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: password
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+        with:
+          bundler-cache: true
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      - name: Run tests
+        run: bin/rake test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
+        with:
+          bundler-cache: true
+
+      - name: Run command on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd /home/projects/my-awesome-project/;
+            git co main;
+            git pull;
+            docker-compose down;
+            docker ps;
+            docker-compose --file docker-compose.prod.yml up -d;
+            docker system prune --all --force;
+            docker ps;
 
 
 ```
@@ -133,7 +206,7 @@ on:
 Пример промежуточного файла на этапе настройки процесса.
 </summary>
 
-```shell
+```sh
 - name: Run command on remote server
    uses: D3rHase/ssh-command-action@v0.2.2
    with:
@@ -142,7 +215,7 @@ on:
       private_key: ${{secrets.SSH_PRIVATE_KEY}}
       command: |
       echo '--- START WORK ON REMOTE SERVER ---';
-      cd /home/projects/aykuli.su/;
+      cd /home/projects/my-awesome-project/;
       echo '--- LIST OF FILES ---';
       ls -al;
       acho '--- GIT INFORMATION ---'

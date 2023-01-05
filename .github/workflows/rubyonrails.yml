@@ -5,9 +5,9 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
   pull_request:
-    branches: ["dev"]
+    branches: ["main"]
 
 jobs:
   lint:
@@ -70,15 +70,12 @@ jobs:
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
-            echo '--- HERE WE START WORK ON REMOTE SERVER ---';
             cd /home/projects/aykuli.su/;
-            git co dev;
+            git co main;
             git pull;
-            echo '---DOCKER OPERATIONS ---';
             docker-compose down;
             docker ps;
             docker-compose --file docker-compose.prod.yml up -d;
-            echo '--- LIST OF DOCKER CONTAINERS ON REMOTE SERVER ---';
             docker system prune --all --force;
             docker ps;
 
