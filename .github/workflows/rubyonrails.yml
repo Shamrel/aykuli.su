@@ -75,7 +75,6 @@ jobs:
             git co dev,
             git pull,
             cp ../aykuli.su.env .env
-            ls -al | grep '.env'
             echo '--- I WANNA BE SURE THAT I COPIED SOME FILE ---'
             sudo docker-compose pull
             sudo docker-compose --file docker-compose.prod.yml up -d
