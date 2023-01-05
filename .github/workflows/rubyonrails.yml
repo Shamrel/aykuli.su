@@ -74,12 +74,11 @@ jobs:
             cd /home/projects/aykuli.su/;
             git co dev;
             git pull;
-            cp ../aykuli.su.env .env;
-            echo '--- I WANNA BE SURE THAT I COPIED SOME FILE ---';
+            echo '---DOCKER OPERATIONS ---';
             docker-compose down;
             docker ps;
             docker-compose --file docker-compose.prod.yml up -d;
             echo '--- LIST OF DOCKER CONTAINERS ON REMOTE SERVER ---';
-            docker system prune;
+            docker system prune --all --force;
             docker ps;
 
