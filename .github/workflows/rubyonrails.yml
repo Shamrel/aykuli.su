@@ -76,10 +76,10 @@ jobs:
             git pull;
             cp ../aykuli.su.env .env;
             echo '--- I WANNA BE SURE THAT I COPIED SOME FILE ---';
-            sudo docker-compose down;
-            sudo docker ps;
-            sudo docker-compose --file docker-compose.prod.yml up -d;
+            docker-compose down;
+            docker ps;
+            docker-compose --file docker-compose.prod.yml up -d;
             echo '--- LIST OF DOCKER CONTAINERS ON REMOTE SERVER ---';
             docker system prune;
-            sudo docker ps;
+            docker ps;
 
