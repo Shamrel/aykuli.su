@@ -5,7 +5,7 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -69,5 +69,11 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: cd /home/projects/aykuli.su/;git co dev;git pull; cp ../aykuli.su.env .env; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
+          command: |
+            cd /home/projects/aykuli.su/
+            git co dev
+            git pull
+            cp ../aykuli.su.env .env
+            docker-compose pull
+            docker-compose --file docker-compose.prod.yml up -d
 
