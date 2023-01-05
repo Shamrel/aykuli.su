@@ -62,7 +62,7 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: cd /home/projects/aykuli.su/;git co dev;git pull; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
+          command: cd /home/projects/aykuli.su/;git co dev;git pull; cp ../aykuli.su.env .env; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
 
   lint:
     runs-on: ubuntu-latest
