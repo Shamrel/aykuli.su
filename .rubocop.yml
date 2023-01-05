@@ -6,7 +6,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - bin/**/*
-    - config/routes.rb
+    - config/
     - db/schema.rb
     - db/migrate/**/*
     - db/seeds/**/*.rb
