@@ -55,22 +55,6 @@ jobs:
         uses: ruby/setup-ruby@ee2113536afb7f793eed4ce60e8d3b26db912da4 # v1.127.0
         with:
           bundler-cache: true
-      # - name: Clean files on remote server
-      #   uses: D3rHase/ssh-command-action@v0.2.2
-      #   with:
-      #     host: ${{secrets.SSH_HOST}}
-      #     user: ${{secrets.SSH_USER}}
-      #     private_key: ${{secrets.SSH_PRIVATE_KEY}}
-      #     command: cd /home/projects/aykuli.su/; rm -r *
-
-      - name: Copy new files to remote server
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: .
-          remote: /home/projects/aykuli.su
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
 
       - name: Run command on remote server
         uses: D3rHase/ssh-command-action@v0.2.2
@@ -78,7 +62,7 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: cd /home/projects/aykuli.su/; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
+          command: cd /home/projects/aykuli.su/;git co dev;git pull; docker ps; docker container stop ror nginx postgres; docker ps; docker-compose --file docker-compose.prod.yml up -d
 
   lint:
     runs-on: ubuntu-latest
