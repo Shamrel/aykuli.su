@@ -74,7 +74,7 @@ Rails.application.configure do
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
   host = 'aykuli.su'
-  config.hosts += [host, "http://#{host}", "https://#{host}", "http://www.#{host}", "https://www.#{host}"]  # Additional comma-separated hosts for development.
+  config.hosts += [host, "http://#{host}", "https://#{host}", "http://www.#{host}", "https://www.#{host}"]
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
